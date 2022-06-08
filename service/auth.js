@@ -1,6 +1,7 @@
 const User = require("../service/schemas/User");
 const jwt = require("jsonwebtoken");
 var gravatar = require("gravatar");
+const { v4: uuidv4 } = require("uuid");
 
 const signUser = async ({ res, value }) => {
   const existingUser = await User.findOne({
@@ -14,6 +15,7 @@ const signUser = async ({ res, value }) => {
     email: value.email,
     subscription: value.subscription,
     avatarURL: gravatar.url(value.email),
+    verificationToken: uuidv4()
   });
 
   await newUser.setPassword(value.password);
