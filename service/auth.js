@@ -95,8 +95,15 @@ const verifyUser = async ({ verificationToken }) => {
   );
 };
 
+const resendEmailToUser = async({value}) => {
+  const user = await User.findOne({ email: value.email });
+  if (user.verify) throw new Error;
+  await user.sendMail(user.email, user.verificationToken);
+}
+
 module.exports = {
   signUser,
   loginUser,
   verifyUser,
+  resendEmailToUser
 };
