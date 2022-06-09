@@ -33,6 +33,9 @@ const loginUser = async ({ value, res }) => {
     return res.status(401).json({ message: "Email or password is wrong" });
   }
 
+  if (!user.verify)
+    return res.status(401).json({ message: "Email not verified" });
+
   const payload = {
     id: user._id,
     email: user.email,
@@ -78,12 +81,22 @@ const loginUser = async ({ value, res }) => {
   };
 };
 
-const verifyUser = async (verificationToken, updatedUser) => {
-
+const verifyUser = async ({ verificationToken }) => {
+  await User.findOneAndUpdate(
+    {
+      verificationToken: verificationToken,
+    },
+    { $set: { verify: true, verificationToken: null } },
+    {
+      new: true,
+      runValidators: true,
+      strict: "throw",
+    }
+  );
 };
 
 module.exports = {
   signUser,
   loginUser,
-  verifyUser
+  verifyUser,
 };

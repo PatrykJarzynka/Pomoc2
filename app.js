@@ -12,7 +12,6 @@ const contactsRouter = require("./routes/api/contacts");
 const authRouter = require("./routes/api/auth");
 const listRouter = require("./routes/api/current");
 const logoutRouter = require("./routes/api/logout");
-const { findOneAndUpdate } = require("./service/schemas/contacts");
 const User = require("./service/schemas/User");
 
 const app = express();

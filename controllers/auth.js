@@ -30,19 +30,16 @@ const login = async (req, res, next) => {
 
 const verifyEmail = async (req, res, next) => {
   const { verificationToken } = req.params;
-  try { 
-    const result = await authService.verifyUser({ verificationToken });
-    res.status(200).json({ message: "Coś poszło" });
+  try {
+    await authService.verifyUser({ verificationToken });
+    res.status(200).json({ message: "Verification successful" });
+  } catch (error) {
+    res.status(404).json({ message: "User not found" });
   }
-  catch {
-    
-  }
- 
-  
-}
+};
 
 module.exports = {
   signup,
   login,
-  verifyEmail
+  verifyEmail,
 };
