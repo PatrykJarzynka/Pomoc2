@@ -69,7 +69,7 @@ app.patch(
           image.resize(250, 250).write(temporaryName);
         })
         .catch(async (err) => {
-          await fs.unlink(temporaryName)
+          await fs.unlink(temporaryName);
           return res.status(400).json({ message: "this is not a photo" });
         });
 

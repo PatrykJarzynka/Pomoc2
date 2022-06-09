@@ -51,11 +51,11 @@ const resendEmail = async (req, res, next) => {
   } catch {
     res.status(400).json({ message: "Verification has already been passed" });
   }
-}
+};
 
 module.exports = {
   signup,
   login,
   verifyEmail,
-  resendEmail
+  resendEmail,
 };
