@@ -44,22 +44,24 @@ user.methods.validatePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-user.methods.sendMail = async function (email) {
-
+user.methods.sendMail = async function (email, token) {
   const emailConfig = {
     to: email,
     from: email,
     subject: "Welcome to Patryk's REST API!",
     text: `Click link to verify your email`,
-    html: "<p>Click link to verify your email<p>",
+    html: `<p>Click link to verify your email: <p><strong><a href="http://localhost:${process.env.PORT}/users/verify/${token}">Verify</a><strong>`,
   };
 
-  sgMail.send(emailConfig).then((res) => {
-    console.log(res)
-  }).catch(err => {
-    console.log(err)
-  })
-}
+  sgMail
+    .send(emailConfig)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const User = mongoose.model("users", user);
 

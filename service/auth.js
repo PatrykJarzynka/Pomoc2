@@ -21,7 +21,7 @@ const signUser = async ({ res, value }) => {
 
   await newUser.setPassword(value.password);
   await newUser.save();
-  await newUser.sendMail(value.email);
+  await newUser.sendMail(value.email, newUser.verificationToken);
 
   return newUser;
 };
@@ -78,7 +78,12 @@ const loginUser = async ({ value, res }) => {
   };
 };
 
+const verifyUser = async (verificationToken, updatedUser) => {
+
+};
+
 module.exports = {
   signUser,
   loginUser,
+  verifyUser
 };
