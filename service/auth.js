@@ -15,11 +15,13 @@ const signUser = async ({ res, value }) => {
     email: value.email,
     subscription: value.subscription,
     avatarURL: gravatar.url(value.email),
-    verificationToken: uuidv4()
+    verify: value.verify,
+    verificationToken: uuidv4(),
   });
 
   await newUser.setPassword(value.password);
   await newUser.save();
+  await newUser.sendMail(value.email);
 
   return newUser;
 };
@@ -36,6 +38,8 @@ const loginUser = async ({ value, res }) => {
     email: user.email,
     subscription: user.subscription,
     avatarURL: user.avatarURL,
+    verify: user.verify,
+    verificationToken: user.verificationToken,
   };
 
   const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });
@@ -46,6 +50,8 @@ const loginUser = async ({ value, res }) => {
     subscription: user.subscription,
     avatarURL: user.avatarURL,
     token: token,
+    verify: user.verify,
+    verificationToken: user.verificationToken,
   };
 
   await User.findOneAndUpdate(
@@ -66,6 +72,8 @@ const loginUser = async ({ value, res }) => {
       subscription: user.subscription,
       avatarURL: user.avatarURL,
       token: token,
+      verify: user.verify,
+      verificationToken: user.verificationToken,
     },
   };
 };
